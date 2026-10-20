@@ -40,6 +40,12 @@
   display: none;
 }
 
+.mn-mic-state {
+  color: #9aa0a6;
+  font-size: 11px;
+  padding-bottom: 4px;
+}
+
 .mn-line {
   margin-bottom: 4px;
 }

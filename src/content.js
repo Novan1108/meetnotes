@@ -3,7 +3,7 @@ let micAllowed = true;
 let recognition = null;
 
 const root = document.createElement("div");
-root.id = "NoteAssist-overlay";
+root.id = "meetnotes-overlay";
 
 const statusPill = document.createElement("div");
 statusPill.className = "mn-status";
@@ -12,8 +12,12 @@ statusPill.textContent = "NoteAssist: idle";
 const interimLine = document.createElement("div");
 interimLine.className = "mn-interim";
 
+const micLine = document.createElement("div");
+micLine.className = "mn-mic-state";
+
 const transcriptPanel = document.createElement("div");
 transcriptPanel.className = "mn-transcript";
+transcriptPanel.appendChild(micLine);
 transcriptPanel.appendChild(interimLine);
 
 root.appendChild(statusPill);
@@ -70,19 +74,42 @@ function addLine(text) {
   transcriptPanel.scrollTop = transcriptPanel.scrollHeight;
 }
 
+async function probeMicPermission() {
+  try {
+    const st = await navigator.permissions.query({ name: "microphone" });
+    if (st.state === "denied") {
+      setMicState("mic: ✕ BLOCKED — allow meet.google.com in the address bar");
+    } else if (st.state === "prompt") {
+      setMicState("mic: permission not granted yet — allow it in the address bar");
+    }
+  } catch {}
+}
+
+function setMicState(text) {
+  micLine.textContent = text;
+}
+
 async function startRecognition() {
+  stopRecognition();
   const { speechLang } = await chrome.storage.local.get("speechLang");
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
+    setMicState("mic: unavailable in this Chrome");
     statusPill.textContent = "NoteAssist: speech recognition unavailable";
     return;
   }
-  recognition = new SR();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = speechLang || "en-US";
+  setMicState("mic: starting…");
+  probeMicPermission();
+  const rec = new SR();
+  recognition = rec;
+  rec.continuous = true;
+  rec.interimResults = true;
+  rec.lang = speechLang || "en-US";
 
-  recognition.onresult = (event) => {
+  rec.onresult = (event) => {
+    micRetries = 0;
+    abortedRuns = 0;
+    setMicState("mic: listening ✓ (speak — lines appear here)");
     let interim = "";
     for (let i = event.resultIndex; i < event.results.length; i++) {
       const result = event.results[i];
@@ -99,21 +126,59 @@ async function startRecognition() {
     setInterim(interim);
   };
 
-  recognition.onend = () => {
-    if (active && micAllowed && recognition) recognition.start();
+  rec.onend = () => {
+    if (!active || recognition !== rec || !micAllowed) return;
+    setTimeout(() => {
+      if (active && recognition === rec && micAllowed) safeStart(rec);
+    }, 250);
   };
 
-  recognition.onerror = (event) => {
-    if (event.error === "not-allowed") {
+  rec.onerror = (event) => {
+    const err = event.error;
+    if (err === "no-speech") return;
+    if (err === "aborted") {
+      abortedRuns++;
+      if (abortedRuns >= 5 && active) {
+        setMicState("mic: keeps restarting — reload the Meet tab");
+      }
+      return;
+    }
+    abortedRuns = 0;
+    if (err === "not-allowed") {
       micAllowed = false;
       active = false;
       statusPill.textContent = "NoteAssist: mic blocked — check browser permissions";
       root.classList.remove("active");
+      setMicState("mic: ✕ blocked — allow the site microphone permission");
+      return;
     }
+    const reasons = {
+      "service-not-allowed": "blocked by the browser — try reloading",
+      "audio-capture": "no microphone found by Chrome — check Windows default input device",
+      network: "network error — the speech service is unreachable",
+      "language-not-supported": `language "${rec.lang}" is not supported`,
+    };
+    setMicState(`mic: ✕ ${reasons[err] || err}`);
+    statusPill.textContent = "NoteAssist: mic error — see status in the transcript panel";
   };
 
-  recognition.start();
+  safeStart(rec);
   statusPill.textContent = "NoteAssist: listening";
+}
+
+function safeStart(rec) {
+  try {
+    rec.start();
+  } catch {
+    micRetries++;
+    if (micRetries <= 8 && active) {
+      setTimeout(() => {
+        if (active && recognition === rec) safeStart(rec);
+      }, 400);
+    } else {
+      setMicState("mic: failed to start — reload the Meet tab");
+    }
+  }
 }
 
 function stopRecognition() {
@@ -123,10 +188,19 @@ function stopRecognition() {
     rec.onend = null;
     rec.onresult = null;
     rec.onerror = null;
-    rec.stop();
+    try {
+      rec.stop();
+    } catch {}
   }
+  micRetries = 0;
+  abortedRuns = 0;
   interimLine.textContent = "";
+  if (active) setMicState("mic: starting…");
+  else setMicState("");
 }
+
+let micRetries = 0;
+let abortedRuns = 0;
 
 let countdownTimer = null;
 
