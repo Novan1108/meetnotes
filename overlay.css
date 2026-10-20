@@ -1,0 +1,52 @@
+#meetnotes-overlay {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2147483647;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(20, 20, 20, 0.85);
+  color: #eee;
+  font: 12px/1.4 system-ui, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 320px;
+}
+
+#meetnotes-overlay.active {
+  border-color: #ea4335;
+  color: #fff;
+}
+
+.mn-status {
+  cursor: pointer;
+  user-select: none;
+}
+
+.mn-transcript {
+  display: none;
+  width: 290px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#meetnotes-overlay.active .mn-transcript {
+  display: block;
+}
+
+#meetnotes-overlay.active.collapsed .mn-transcript {
+  display: none;
+}
+
+.mn-line {
+  margin-bottom: 4px;
+}
+
+.mn-interim {
+  color: #9aa0a6;
+  font-style: italic;
+  min-height: 16px;
+  margin-bottom: 4px;
+}

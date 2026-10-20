@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="icon" href="icon32.png" />
+    <title>MeetNotes — settings</title>
+    <style>
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .row:last-of-type {
+        border-bottom: none;
+      }
+      .row .main {
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .row .desc {
+        font-size: 11.5px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-top: 2px;
+      }
+      .row select,
+      .row input[type="checkbox"] {
+        width: auto;
+        flex-shrink: 0;
+      }
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent);
+        cursor: pointer;
+      }
+      select {
+        min-width: 170px;
+      }
+      #saved {
+        color: var(--green);
+        font-size: 12px;
+        min-height: 16px;
+        margin-top: 10px;
+      }
+      #danger .btn-danger {
+        flex-shrink: 0;
+        padding: 7px 14px;
+        font-size: 12px;
+      }
+      #ver {
+        font-size: 10px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body class="page" style="max-width: 660px">
+    <header class="topbar">
+      <a class="brand" href="history.html"><img src="icon32.png" alt="" />MeetNotes</a>
+      <nav>
+        <a href="notes.html">Notes</a>
+        <a href="history.html">History</a>
+        <a href="analytics.html">Stats</a>
+        <a href="settings.html" class="on">Settings</a>
+      </nav>
+    </header>
+    <h1>Settings</h1>
+
+    <section class="section">
+      <div class="row">
+        <div>
+          <div class="main">Transcript language (live mic)</div>
+          <div class="desc">Chrome's live speech engine for your own voice. Whisper auto-detects remote audio.</div>
+        </div>
+        <select id="lang"></select>
+      </div>
+      <div class="row">
+        <div>
+          <div class="main">Auto-record when I join a Meet call</div>
+          <div class="desc">Capture starts by itself on call pages; stop it from the popup.</div>
+        </div>
+        <input id="auto-record" type="checkbox" />
+      </div>
+      <div class="row">
+        <div>
+          <div class="main">Delay before auto-record</div>
+          <div class="desc">A visible countdown with a cancel button, so nothing records without warning.</div>
+        </div>
+        <select id="auto-delay">
+          <option value="0">Immediately</option>
+          <option value="10">After 10s</option>
+          <option value="30">After 30s</option>
+        </select>
+      </div>
+      <div id="saved"></div>
+    </section>
+
+    <section class="section" id="danger">
+      <div class="row" style="border: none; padding: 4px 0">
+        <div>
+          <div class="main">Delete all meetings</div>
+          <div class="desc">Removes every stored meeting, transcript, and note. Keeps your API keys and Notion connection.</div>
+        </div>
+        <button id="clear-meetings" class="btn btn-danger">Delete all</button>
+      </div>
+    </section>
+
+    <div id="ver"></div>
+    <script src="settings.js"></script>
+  </body>
+</html>
