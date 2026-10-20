@@ -4,6 +4,12 @@ A Chrome extension that turns Google Meet calls into structured, evidence-linked
 
 Join a call, and NoteAssist captures your voice (live Chrome speech engine) plus the meeting's tab audio (OpenAI Whisper via Groq's free tier), then generates notes with an LLM: **summary, decisions, action items with owners and timestamps, and open questions**. Every note item links back to the exact transcript line that supports it.
 
+## Screenshots
+
+| Notes | History | Analytics |
+|---|---|---|
+| ![AI notes with evidence links](docs/screenshots/notes.png) | ![Searchable meeting history](docs/screenshots/history.png) | ![Talk-time analytics](docs/screenshots/analytics.png) |
+
 ## Features
 
 - **One-click capture** — status overlay inside Meet shows live transcription; optional auto-record with a cancelable countdown
@@ -44,7 +50,7 @@ Meet tab ◀───────┘  live transcript overlay (Web Speech API)
 
 - The offscreen document owns all long-running work (MediaRecorder, Groq uploads/LLM calls) because MV3 service workers can be killed mid-request
 - Messaging contract: every listener returns `true` only when it will `sendResponse` (a hung channel from an unused `return true` is a classic MV3 bug)
-- Icons generated from `assets/icon.svg` via `assets/make-icons.ps1` (GDI+)
+- Icons generated from `docs/icon.svg` via `docs/make-icons.ps1` (GDI+)
 
 ## Roadmap
 
