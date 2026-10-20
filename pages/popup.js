@@ -95,19 +95,19 @@ document.getElementById("stop").addEventListener("click", async () => {
 });
 
 document.getElementById("open-notes").addEventListener("click", async () => {
-  await chrome.tabs.create({ url: chrome.runtime.getURL("notes.html") });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("pages/notes.html") });
 });
 
 document.getElementById("open-history").addEventListener("click", async () => {
-  await chrome.tabs.create({ url: chrome.runtime.getURL("history.html") });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("pages/history.html") });
 });
 
 document.getElementById("open-settings").addEventListener("click", async () => {
-  await chrome.tabs.create({ url: chrome.runtime.getURL("settings.html") });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("pages/settings.html") });
 });
 
 document.getElementById("open-analytics").addEventListener("click", async () => {
-  await chrome.tabs.create({ url: chrome.runtime.getURL("analytics.html") });
+  await chrome.tabs.create({ url: chrome.runtime.getURL("pages/analytics.html") });
 });
 
 const keyInput = document.getElementById("api-key");

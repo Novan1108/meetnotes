@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.Drawing
 
-$dir = "C:\Users\Asus Tuf A16\Desktop\meetnotes"
+$dir = "C:\Users\Asus Tuf A16\Desktop\meetnotes\icons"
 
 foreach ($s in 16, 32, 48, 128) {
   $bitmap = New-Object System.Drawing.Bitmap($s, $s)

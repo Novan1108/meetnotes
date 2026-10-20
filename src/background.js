@@ -25,7 +25,7 @@ async function ensureOffscreenReady() {
   if (exists) return true;
   try {
     await chrome.offscreen.createDocument({
-      url: "offscreen.html",
+      url: "src/offscreen.html",
       reasons: ["USER_MEDIA"],
       justification: "Capture Google Meet tab audio for meeting notes"
     });

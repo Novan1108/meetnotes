@@ -1,33 +1,33 @@
 {
   "manifest_version": 3,
   "name": "MeetNotes",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Auto meeting notes for Google Meet",
   "permissions": ["activeTab", "tabs", "tabCapture", "offscreen", "storage", "unlimitedStorage"],
   "host_permissions": ["https://meet.google.com/*", "https://api.groq.com/*", "https://api.notion.com/*"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "pages/popup.html",
     "default_title": "MeetNotes",
     "default_icon": {
-      "16": "icon16.png",
-      "32": "icon32.png",
-      "48": "icon48.png"
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
     }
   },
   "icons": {
-    "16": "icon16.png",
-    "32": "icon32.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
-      "js": ["content.js"],
-      "css": ["overlay.css"],
+      "js": ["src/content.js"],
+      "css": ["pages/overlay.css"],
       "run_at": "document_idle"
     }
   ]
