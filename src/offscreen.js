@@ -108,7 +108,7 @@ async function transcribeTabAudio(blob) {
   return { segments };
 }
 
-const NOTES_MODEL = "llama-3.3-70b-versatile";
+const NOTES_MODEL = "openai/gpt-oss-120b";
 
 const NOTES_SYSTEM_PROMPT =
   "You are a meticulous meeting-notes assistant. You receive a transcript where each line has an ID (L00, L01...), a timestamp, and a speaker ('you' or 'others')." +
