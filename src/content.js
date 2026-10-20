@@ -3,11 +3,11 @@ let micAllowed = true;
 let recognition = null;
 
 const root = document.createElement("div");
-root.id = "meetnotes-overlay";
+root.id = "NoteAssist-overlay";
 
 const statusPill = document.createElement("div");
 statusPill.className = "mn-status";
-statusPill.textContent = "MeetNotes: idle";
+statusPill.textContent = "NoteAssist: idle";
 
 const interimLine = document.createElement("div");
 interimLine.className = "mn-interim";
@@ -25,8 +25,8 @@ chrome.runtime.onMessage.addListener((msg) => {
     active = !!msg.active;
     micAllowed = true;
     statusPill.textContent = active
-      ? "MeetNotes: listening"
-      : "MeetNotes: idle";
+      ? "NoteAssist: listening"
+      : "NoteAssist: idle";
     root.classList.toggle("active", active);
     if (active) {
       stopCountdown();
@@ -38,12 +38,12 @@ chrome.runtime.onMessage.addListener((msg) => {
   }
   if (msg.type === "capture-error") {
     active = false;
-    statusPill.textContent = "MeetNotes: capture failed — restart from the popup";
+    statusPill.textContent = "NoteAssist: capture failed — restart from the popup";
     root.classList.remove("active");
     stopRecognition();
   }
   if (msg.type === "auto-start-failed") {
-    statusPill.textContent = `MeetNotes: auto-record failed (${msg.reason || "unknown"})`;
+    statusPill.textContent = `NoteAssist: auto-record failed (${msg.reason || "unknown"})`;
   }
 });
 
@@ -74,7 +74,7 @@ async function startRecognition() {
   const { speechLang } = await chrome.storage.local.get("speechLang");
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    statusPill.textContent = "MeetNotes: speech recognition unavailable";
+    statusPill.textContent = "NoteAssist: speech recognition unavailable";
     return;
   }
   recognition = new SR();
@@ -107,13 +107,13 @@ async function startRecognition() {
     if (event.error === "not-allowed") {
       micAllowed = false;
       active = false;
-      statusPill.textContent = "MeetNotes: mic blocked — check browser permissions";
+      statusPill.textContent = "NoteAssist: mic blocked — check browser permissions";
       root.classList.remove("active");
     }
   };
 
   recognition.start();
-  statusPill.textContent = "MeetNotes: listening";
+  statusPill.textContent = "NoteAssist: listening";
 }
 
 function stopRecognition() {
@@ -140,7 +140,7 @@ function stopCountdown() {
 function reallyAutoStart() {
   chrome.runtime.sendMessage({ type: "request-auto-start" }, (res) => {
     if (res && res.ok === false && res.error) {
-      statusPill.textContent = `MeetNotes: auto-record failed (${res.error})`;
+      statusPill.textContent = `NoteAssist: auto-record failed (${res.error})`;
       root.classList.remove("active");
     }
   });
@@ -160,13 +160,13 @@ function startCountdown() {
     cancel.style.cssText =
       "margin-left:8px;background:#f1f3f4;border:none;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:10px;";
     const updatePill = () => {
-      statusPill.textContent = `MeetNotes: auto-record starts in ${remaining}s`;
+      statusPill.textContent = `NoteAssist: auto-record starts in ${remaining}s`;
       if (!cancel.parentElement) statusPill.appendChild(cancel);
     };
     updatePill();
     cancel.onclick = () => {
       stopCountdown();
-      statusPill.textContent = "MeetNotes: auto-record skipped — start manually";
+      statusPill.textContent = "NoteAssist: auto-record skipped — start manually";
       root2.classList.remove("active");
     };
     countdownTimer = setInterval(() => {

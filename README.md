@@ -1,8 +1,8 @@
-# MeetNotes
+# NoteAssist
 
 A Chrome extension that turns Google Meet calls into structured, evidence-linked meeting notes — automatically.
 
-Join a call, and MeetNotes captures your voice (live Chrome speech engine) plus the meeting's tab audio (OpenAI Whisper via Groq's free tier), then generates notes with an LLM: **summary, decisions, action items with owners and timestamps, and open questions**. Every note item links back to the exact transcript line that supports it.
+Join a call, and NoteAssist captures your voice (live Chrome speech engine) plus the meeting's tab audio (OpenAI Whisper via Groq's free tier), then generates notes with an LLM: **summary, decisions, action items with owners and timestamps, and open questions**. Every note item links back to the exact transcript line that supports it.
 
 ## Features
 
@@ -20,7 +20,7 @@ Join a call, and MeetNotes captures your voice (live Chrome speech engine) plus 
 1. Clone/download this repo
 2. Chrome → `chrome://extensions` → enable Developer mode → **Load unpacked** → select the folder
 3. Create a free API key at [console.groq.com](https://console.groq.com) (no credit card)
-4. Open the MeetNotes popup → paste the key → Save (or drop it into `secrets.txt` — see `.gitignore`)
+4. Open the NoteAssist popup → paste the key → Save (or drop it into `secrets.txt` — see `.gitignore`)
 5. Join any Google Meet call → press **Start** (or enable auto-record in Settings)
 
 Optional: connect Notion from History → "Notion sync" to enable task pushing.

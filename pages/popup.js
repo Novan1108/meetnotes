@@ -38,7 +38,7 @@ async function refresh() {
       timeout
     ]);
   } catch (err) {
-    statusTextEl.textContent = "worker error — see chrome://extensions → MeetNotes → Errors";
+    statusTextEl.textContent = "worker error — see chrome://extensions → NoteAssist → Errors";
     statusEl.classList.add("rec");
     return;
   }

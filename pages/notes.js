@@ -108,7 +108,7 @@ async function render() {
   const copyBtn = document.getElementById("copy");
 
   if (!meetings.length) {
-    content.innerHTML = `<p class="empty">No meetings recorded yet. Join a Google Meet call and press Start in the MeetNotes popup.</p>
+    content.innerHTML = `<p class="empty">No meetings recorded yet. Join a Google Meet call and press Start in the NoteAssist popup.</p>
       <p style="text-align:center"><a href="history.html" style="color:#1a73e8">History</a> · <a href="settings.html" style="color:#1a73e8">Settings</a></p>`;
     return;
   }

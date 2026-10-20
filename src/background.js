@@ -268,7 +268,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           }
           const db = await notionRequest("/databases", notionToken, {
             parent: { type: "page_id", page_id: pageId },
-            title: [{ type: "text", text: { content: "MeetNotes Tasks" } }],
+            title: [{ type: "text", text: { content: "NoteAssist Tasks" } }],
             properties: {
               Name: { title: {} },
               Owner: { rich_text: {} },
