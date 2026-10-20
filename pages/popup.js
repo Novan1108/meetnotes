@@ -4,13 +4,13 @@ const lastEl = document.getElementById("lastSession");
 const setupEl = document.getElementById("setup");
 
 async function refreshSetup() {
-  const cfg = await chrome.storage.local.get(["groqKey", "notionToken", "notionDatabaseId", "autoRecord"]);
-  const needs = [];
-  if (!cfg.groqKey) needs.push("Groq key missing — add in Settings");
-  if (!cfg.notionDatabaseId) needs.push("Notion not connected — History ⚙");
-  if (!cfg.autoRecord) needs.push("auto-record off");
-  setupEl.textContent = needs.length ? needs.join(" · ") : "";
-  setupEl.style.display = needs.length ? "block" : "none";
+  const cfg = await chrome.storage.local.get(["groqKey"]);
+  if (!cfg.groqKey) {
+    setupEl.textContent = "Groq key missing — add below or in Settings";
+    setupEl.style.display = "block";
+  } else {
+    setupEl.style.display = "none";
+  }
 }
 
 function getStreamId(tabId) {
