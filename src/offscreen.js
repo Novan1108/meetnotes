@@ -76,8 +76,16 @@ function stop() {
   rec.stop();
 }
 
+function getGroqKey() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: "get-token" }, (res) =>
+      resolve(res ? res.groqKey : null)
+    );
+  });
+}
+
 async function transcribeTabAudio(blob) {
-  const { groqKey } = await chrome.storage.local.get("groqKey");
+  const groqKey = await getGroqKey();
   if (!groqKey) return null;
   const form = new FormData();
   form.append("file", blob, "meeting.webm");
@@ -160,7 +168,7 @@ function validateNotes(parsed, segments) {
 }
 
 async function generateNotes(record) {
-  const { groqKey } = await chrome.storage.local.get("groqKey");
+  const groqKey = await getGroqKey();
   if (!groqKey) throw new Error("no Groq API key saved");
   if (!record.segments.length) throw new Error("empty transcript");
   const numbered = record.segments

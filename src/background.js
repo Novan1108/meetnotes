@@ -164,6 +164,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         break;
       }
 
+      case "get-token": {
+        const cfg = await chrome.storage.local.get("groqKey");
+        sendResponse({ groqKey: cfg.groqKey });
+        break;
+      }
+
       case "transcript-line":
         if (session) session.lines.push({ text: msg.text, at: msg.at });
         break;
